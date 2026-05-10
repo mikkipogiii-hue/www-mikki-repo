@@ -21,7 +21,8 @@ class UserModel {
                             :createdAt, :updatedAt
                         )";
         
-        $hashedPassword = password_hash($pWord, PASSWORD_ARGON2ID);
+        
+        $hashedPassword = password_hash($pWord, PASSWORD_DEFAULT);
         $dateNow = date("Y-m-d H:i:s");
 
         $stmt = $this->conn->prepare($insertQuery);
@@ -31,7 +32,7 @@ class UserModel {
         $stmt->bindParam(':bDate', $bDate);
         $stmt->bindParam(':phone', $phone);
         $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':username', $uName);
+        $stmt->bindParam(':username',$uName); 
         $stmt->bindParam(':password', $hashedPassword); 
         $stmt->bindParam(':deptID', $deptID);
         $stmt->bindParam(':createdAt', $dateNow);
@@ -41,14 +42,19 @@ class UserModel {
     }
 
     public function loginFunc($uName, $pWord) {
+        // We only search by username
         $query = "SELECT * FROM tbl_users WHERE username = :username LIMIT 1";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':username', $uName);
+        $trimmedUName = trim($uName);
+        $stmt->bindParam(':username', $trimmedUName);
         $stmt->execute();
 
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
+        
         if ($user && password_verify($pWord, $user['password'])) {
+            
+            unset($user['password']);
             return $user;
         }
 
@@ -60,12 +66,12 @@ class UserModel {
                         SET username = :username, password = :password, updatedAt = :updatedAt 
                         WHERE user_id = :userID";
         
-        $hashedPassword = password_hash($pWord, PASSWORD_ARGON2ID);
+        $hashedPassword = password_hash($pWord, PASSWORD_DEFAULT);
         $dateNow = date('Y-m-d H:i:s');
         
         $stmt = $this->conn->prepare($updateQuery);
         
-        $stmt->bindParam(":username", $uName);
+        $stmt->bindParam(":username", trim($uName));
         $stmt->bindParam(":password", $hashedPassword);
         $stmt->bindParam(":updatedAt", $dateNow);
         $stmt->bindParam(":userID", $uID);
