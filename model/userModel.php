@@ -9,18 +9,17 @@ class UserModel {
         $this->conn = $db;
     }
 
-    public function createUser($fName, $lName, $bDate, $phone, $email, $uName, $pWord, $deptID): bool {
+    public function createUser($fName, $lName, $bDate, $phone, $email, $uName, $pWord, $deptID, $role): bool {
         $insertQuery = "INSERT INTO tbl_users (
                             first_name, last_name, birth_date, phone_number, 
-                            email_address, username, password, department_id, 
+                            email_address, username, password, department_id, role,
                             createdAt, updatedAt
                         ) 
                         VALUES (
                             :fName, :lName, :bDate, :phone, 
-                            :email, :username, :password, :deptID, 
+                            :email, :username, :password, :deptID, :role,
                             :createdAt, :updatedAt
                         )";
-        
         
         $hashedPassword = password_hash($pWord, PASSWORD_DEFAULT);
         $dateNow = date("Y-m-d H:i:s");
@@ -35,6 +34,7 @@ class UserModel {
         $stmt->bindParam(':username',$uName); 
         $stmt->bindParam(':password', $hashedPassword); 
         $stmt->bindParam(':deptID', $deptID);
+        $stmt->bindParam(':role', $role);
         $stmt->bindParam(':createdAt', $dateNow);
         $stmt->bindParam(':updatedAt', $dateNow);
 
@@ -42,7 +42,6 @@ class UserModel {
     }
 
     public function loginFunc($uName, $pWord) {
-        // We only search by username
         $query = "SELECT * FROM tbl_users WHERE username = :username LIMIT 1";
         $stmt = $this->conn->prepare($query);
         $trimmedUName = trim($uName);
@@ -51,9 +50,7 @@ class UserModel {
 
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        
         if ($user && password_verify($pWord, $user['password'])) {
-            
             unset($user['password']);
             return $user;
         }

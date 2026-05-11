@@ -11,9 +11,9 @@ class UserManager {
         $this->userModel = new UserModel($db);
     }
 
-    public function addUserFunc($fName, $lName, $bDate, $phone, $email, $uName, $pWord, $deptID) {
+    public function addUserFunc($fName, $lName, $bDate, $phone, $email, $uName, $pWord, $deptID, $role) {
         try {
-            return $this->userModel->createUser($fName, $lName, $bDate, $phone, $email, $uName, $pWord, $deptID);
+            return $this->userModel->createUser($fName, $lName, $bDate, $phone, $email, $uName, $pWord, $deptID, $role);
         } catch (Exception $ex) {
             http_response_code(500);
             echo $ex->getMessage();
@@ -67,3 +67,4 @@ class UserManager {
         return $response->fetchAll(PDO::FETCH_ASSOC);
     }
 }
+?>

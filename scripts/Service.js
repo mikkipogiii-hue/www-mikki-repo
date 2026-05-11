@@ -26,8 +26,9 @@ function addFunc() {
     const username = $("#uName").val();
     const password = $("#pWord").val();
     const deptID = $("#deptID").val();
+    const role = $("#role").val();
 
-    if (!fName || !lName || !username || !password || !deptID) {
+    if (!fName || !lName || !username || !password || !deptID || !role) {
         Swal.fire("Required", "Please fill in all professional credentials.", "error");
         return;
     }
@@ -43,7 +44,8 @@ function addFunc() {
             email: email, 
             uName: username, 
             pWord: password, 
-            deptID: deptID 
+            deptID: deptID,
+            role: role
         },
         success: function (res) {
             if (res.trim() === "success") {

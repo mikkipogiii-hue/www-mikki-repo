@@ -17,7 +17,8 @@ if (isset($_POST["uName"], $_POST["pWord"], $_POST["fName"], $_POST["lName"]) &&
         email:  $_POST["email"],
         uName:  $_POST["uName"], 
         pWord:  $_POST["pWord"], 
-        deptID: $_POST["deptID"]
+        deptID: $_POST["deptID"],
+        role:   $_POST["role"]
     );
 
     if ($res === true) {
@@ -25,6 +26,7 @@ if (isset($_POST["uName"], $_POST["pWord"], $_POST["fName"], $_POST["lName"]) &&
         $dept = htmlspecialchars($_POST["deptID"]);
         $user = htmlspecialchars($_POST["uName"]);
         $emailAddr = htmlspecialchars($_POST["email"]);
+        $roleType = htmlspecialchars($_POST["role"]);
 
         $body = "
         <div style='font-family: Segoe UI, Roboto, Helvetica, Arial, sans-serif; background-color: #f4f7f9; padding: 40px; color: #333;'>
@@ -40,6 +42,10 @@ if (isset($_POST["uName"], $_POST["pWord"], $_POST["fName"], $_POST["lName"]) &&
                         <tr>
                             <td style='padding: 12px 0; border-bottom: 1px solid #eee; color: #78909c; font-size: 14px;'>FULL NAME</td>
                             <td style='padding: 12px 0; border-bottom: 1px solid #eee; text-align: right; color: #1a237e; font-weight: bold;'>$fullName</td>
+                        </tr>
+                        <tr>
+                            <td style='padding: 12px 0; border-bottom: 1px solid #eee; color: #78909c; font-size: 14px;'>ACCESS LEVEL</td>
+                            <td style='padding: 12px 0; border-bottom: 1px solid #eee; text-align: right; color: #d32f2f; font-weight: bold;'>$roleType</td>
                         </tr>
                         <tr>
                             <td style='padding: 12px 0; border-bottom: 1px solid #eee; color: #78909c; font-size: 14px;'>EMAIL</td>
@@ -69,7 +75,7 @@ if (isset($_POST["uName"], $_POST["pWord"], $_POST["fName"], $_POST["lName"]) &&
         sendEmail(
             "jaspermdistroyer@gmail.com",
             "Admin",
-            "New Staff Registration: $fullName",
+            "New Staff Registration: $fullName ($roleType)",
             $body
         );
 

@@ -1,11 +1,6 @@
 <?php 
-    /**
-     * 1. PHP SERVER-SIDE LOGIC
-     * Standard session management for the login portal.
-     */
     session_start();
 
-    // If user is already logged in, redirect them directly to the dashboard
     if (isset($_SESSION['user_id'])) {
         header("Location: DashboardPage.php");
         exit;
@@ -27,11 +22,11 @@
 
     <style>
         :root {
-            --primary-color: #1a237e; /* Indigo darken-4 */
-            --accent-color: #00bcd4;  /* Cyan */
+            --primary-bg: #0f172a;
+            --slate-blue: #1e293b;
+            --accent-color: #00bcd4;
         }
 
-        /* FULL PAGE UTILIZATION */
         html, body {
             height: 100%;
             margin: 0;
@@ -46,9 +41,8 @@
             width: 100%;
         }
 
-        /* BRAND PANEL (LEFT) - Matches Registration */
         .brand-aside {
-            background: linear-gradient(135deg, var(--primary-color) 0%, #3949ab 100%);
+            background: linear-gradient(135deg, var(--primary-bg) 0%, var(--slate-blue) 100%);
             color: white;
             flex: 1 1 50%;
             display: flex;
@@ -68,13 +62,12 @@
         }
 
         .brand-aside h2 {
-            font-weight: 300;
+            font-weight: 800;
             font-size: 4rem;
             margin: 40px 0 20px 0;
             line-height: 1.1;
         }
 
-        /* LOGIN PANEL (RIGHT) */
         .form-section {
             background: white;
             flex: 1 1 50%;
@@ -93,18 +86,17 @@
             flex: 1;
         }
 
-        .form-header h4 { font-weight: 800; color: var(--primary-color); margin-top: 0; }
+        .form-header h4 { font-weight: 800; color: var(--primary-bg); margin-top: 0; }
         
-        /* Premium Input Styling */
         .input-field input:focus + label,
-        .input-field .prefix.active { color: var(--primary-color) !important; }
-        .input-field input:focus { border-bottom: 1px solid var(--primary-color) !important; box-shadow: 0 1px 0 0 var(--primary-color) !important; }
+        .input-field .prefix.active { color: var(--accent-color) !important; }
+        .input-field input:focus { border-bottom: 1px solid var(--accent-color) !important; box-shadow: 0 1px 0 0 var(--accent-color) !important; }
 
         .btn-login {
             width: 100%;
             height: 55px;
-            border-radius: 6px;
-            background: var(--primary-color) !important;
+            border-radius: 12px;
+            background: var(--primary-bg) !important;
             font-weight: 700;
             margin-top: 30px;
             letter-spacing: 1px;
@@ -114,52 +106,46 @@
         .btn-register-outline {
             width: 100%;
             height: 55px;
-            border-radius: 6px;
+            border-radius: 12px;
             background: transparent !important;
-            border: 2px solid var(--primary-color);
-            color: var(--primary-color);
+            border: 2px solid var(--primary-bg);
+            color: var(--primary-bg);
             font-weight: 700;
             margin-top: 15px;
             box-shadow: none;
             transition: 0.3s;
         }
 
-        .btn-register-outline:hover {
-            background: #f5f5f5 !important;
-            box-shadow: none;
-        }
-
-        .premium-footer {
-            padding: 30px 10%;
-            background: #fafafa;
-            border-top: 1px solid #eee;
-            color: #b0bec5;
-            font-size: 0.9rem;
-        }
-
-        /* Divider Text Styling */
         .divider-container {
             display: flex;
             align-items: center;
             text-align: center;
             margin: 25px 0;
-            color: #cfd8dc;
+            color: #cbd5e1;
+            font-weight: 700;
+            font-size: 0.8rem;
         }
         .divider-container::before, .divider-container::after {
             content: '';
             flex: 1;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid #e2e8f0;
         }
-        .divider-container:not(:empty)::before { margin-right: 1em; }
-        .divider-container:not(:empty)::after { margin-left: 1em; }
+        .divider-container:not(:empty)::before { margin-right: 1.5em; }
+        .divider-container:not(:empty)::after { margin-left: 1.5em; }
 
-        /* Responsive Breakpoints */
+        .premium-footer {
+            padding: 30px 10%;
+            background: #f8fafc;
+            border-top: 1px solid #e2e8f0;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
         @media only screen and (max-width : 992px) {
             html, body { overflow: auto; }
             .premium-container { flex-direction: column; }
             .brand-aside, .form-section { flex: 1 1 100%; padding: 40px; }
             .centered-form { padding: 40px 0; }
-            .brand-aside h2 { font-size: 2.8rem; }
         }
     </style>
 </head>
@@ -169,12 +155,12 @@
     
     <div class="brand-aside">
         <div class="logo-mark">
-            <i class="material-icons" style="margin-right: 10px;">local_hospital</i>
+            <i class="material-icons" style="margin-right: 10px; color: var(--accent-color);">local_hospital</i>
             HMS Portal
         </div>
 
         <div>
-            <h2>Professional <br> Authentication</h2>
+            <h2>Authorized <br> Authentication</h2>
             <p>Welcome back. Please verify your credentials to access the Hospital Management System dashboard and secure medical records.</p>
             
             <div style="margin-top: 50px; font-size: 1.1rem;">

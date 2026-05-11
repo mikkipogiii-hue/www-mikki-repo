@@ -1,19 +1,22 @@
 <?php
-require_once "../model/database.php";
 require_once "../model/departmentModel.php";
+require_once "../model/database.php";
 
 class DepartmentManager {
-    private $departmentModel;
+    private $deptModel;
 
-    public function __construct()
-    {
+    public function __construct() {
         $database = new Database();
         $db = $database->connectDB();
-        $this->departmentModel = new DepartmentModel($db);
+        $this->deptModel = new DepartmentModel($db);
     }
-      public function getDepartments(): mixed {
-        $response = $this->departmentModel->readDepartment();
-        return $response->fetchAll(PDO::FETCH_ASSOC);
+
+    public function getCardDepartments() {
+        return $this->deptModel->getDepartmentCensus();
+    }
+
+    public function getDepartments() {
+        return $this->deptModel->readDepartment()->fetchAll(PDO::FETCH_ASSOC);
     }
 }
 ?>
